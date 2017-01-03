@@ -24,6 +24,7 @@
 #define RAISE M(_RAISE)
 #define M_BL 5
 #define M_SHRUG 6
+#define M_ESHRUG 7
 
 // Fillers to make layering more clear
 #define _______ KC_TRNS
@@ -88,17 +89,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_ESC,  KC_F1,    KC_F2,   KC_F3,    KC_F4,          KC_F5,   KC_F6,   KC_F7,   KC_F8,    KC_F9,   KC_F10, KC_DEL},
   {KC_MUTE, KC_BSPC,  KC_UP,   KC_DEL,   KC_WWW_FORWARD, KC_BTN1, KC_MS_U, KC_BTN2, KC_PSLS,  KC_P7,   KC_P8,  KC_P9},
   {_______, KC_LEFT,  KC_DOWN, KC_RIGHT, KC_WWW_REFRESH, KC_MS_L, KC_MS_D, KC_MS_R, KC_PAST,  KC_P4,   KC_P5,  KC_P6},
-  {KC_VOLU, KC_MPRV,  KC_MPLY, KC_MNXT,  KC_WWW_BACK,    KC_WH_D, KC_BTN3, KC_WH_U, KC_PMNS,  KC_P1,   KC_P2,  KC_P3},
-  {KC_VOLD, _______,  _______, _______,  _______,        _______, _______, _______, KC_PPLS,  KC_PENT, KC_P0,  KC_PDOT}
+  {_______, KC_MPRV,  KC_MPLY, KC_MNXT,  KC_WWW_BACK,    KC_WH_D, KC_BTN3, KC_WH_U, KC_PMNS,  KC_P1,   KC_P2,  KC_P3},
+  {KC_VOLD, KC_VOLU,  _______, _______,  _______,        _______, _______, _______, KC_PPLS,  KC_PENT, KC_P0,  KC_PDOT}
 },
 
 /* Raise
  * ,-----------------------------------------------------------------------------------.
  * | Esc  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Del  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Bksp | PgUp |  Del |eShrug|      | Home | PgUp | PgDn | End  |      |      |
+ * |      | Bksp | PgUp |  Del |eShrug|  sf  | Home | PgUp | PgDn | End  |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Home | PgDn |  End | Shrug|      | Left | Down |  Up  | Right|      |      |
+ * |      | Home | PgDn |  End | Shrug|  sh  | Left | Down |  Up  | Right|      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      | Pause| Ins  |      |      | Print|Screen|      |      |      |      |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -107,8 +108,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = {
   {KC_ESC, KC_EXLM, KC_AT,    KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN,  KC_RPRN,  KC_CLEAR},
-  {_______, KC_BSPC, KC_PGUP, KC_DEL,  _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
-  {_______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
+  {_______, KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), KC_SHRUG_FACE, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
+  {_______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
   {_______, KC_PAUSE, KC_INS, _______, _______, KC_PSCR, KC_PSCR, _______, _______, _______,  _______,  _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______}
 },
@@ -217,6 +218,11 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         case M_SHRUG:
           if (record->event.pressed) {
             return MACRO(I(10), T(SHRUG_HAND), T(BSLASH), D(LSHIFT), T(MINUS), T(9), U(LSHIFT), T(SHRUG_FACE), D(LSHIFT), T(0), T(MINUS), U(LSHIFT), T(SLASH), T(SHRUG_HAND), END);
+          }
+          break;
+        case M_ESHRUG:
+          if (record->event.pressed) {
+            return MACRO(I(10), D(LSHIFT), T(7), U(LSHIFT), T(S), T(H), T(R), T(U), T(G), T(SCLN), END);
           }
           break;
       }
