@@ -22,7 +22,7 @@
 #define NUMPAD M(_NUMPAD)
 #define LOWER M(_LOWER)
 #define RAISE M(_RAISE)
-#define M_BL 5
+#define M_CAPS 5
 #define M_SHRUG 6
 #define M_ESHRUG 7
 
@@ -49,8 +49,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                KC_6,    KC_7,    KC_8,     KC_9,     KC_0,     KC_BSPC},
   {KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,    KC_U,    KC_I,     KC_O,     KC_P,     KC_BSLASH},
   {LT(_RAISE, KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,                KC_G,    KC_H,    KC_J,     KC_K,     KC_L,     KC_SCLN, KC_QUOT},
-  {KC_LSFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_ENT },
-  {M(M_BL),   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   LT(_LOWER, KC_SPC),  KC_SPC,  RAISE,   MT(MOD_LGUI, KC_MINUS), MT(MOD_LALT, KC_EQUAL), MT(MOD_LCTL, KC_LBRC),  MT(MOD_LSFT, KC_RBRC)}
+  {KC_RSFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_ENT },
+  {KC_LSFT,   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   LT(_LOWER, KC_SPC),  KC_SPC,  RAISE,   MT(MOD_LGUI, KC_MINUS), MT(MOD_LALT, KC_EQUAL), MT(MOD_LCTL, KC_LBRC),  MT(MOD_LSFT, KC_RBRC)}
 },
 /* NUMPAD
  * ,-----------------------------------------------------------------------------------.
@@ -89,8 +89,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_ESC,  KC_F1,    KC_F2,   KC_F3,    KC_F4,          KC_F5,   KC_F6,   KC_F7,   KC_F8,    KC_F9,   KC_F10, KC_DEL},
   {KC_MUTE, KC_BSPC,  KC_UP,   KC_DEL,   KC_WWW_FORWARD, KC_BTN1, KC_MS_U, KC_BTN2, KC_PSLS,  KC_P7,   KC_P8,  KC_P9},
   {_______, KC_LEFT,  KC_DOWN, KC_RIGHT, KC_WWW_REFRESH, KC_MS_L, KC_MS_D, KC_MS_R, KC_PAST,  KC_P4,   KC_P5,  KC_P6},
-  {_______, KC_MPRV,  KC_MPLY, KC_MNXT,  KC_WWW_BACK,    KC_WH_D, KC_BTN3, KC_WH_U, KC_PMNS,  KC_P1,   KC_P2,  KC_P3},
-  {KC_VOLD, KC_VOLU,  _______, _______,  _______,        _______, _______, _______, KC_PPLS,  KC_PENT, KC_P0,  KC_PDOT}
+  {KC_VOLU, KC_MPRV,  KC_MPLY, KC_MNXT,  KC_WWW_BACK,    KC_WH_D, KC_BTN3, KC_WH_U, KC_PMNS,  KC_P1,   KC_P2,  KC_P3},
+  {KC_VOLD, _______,  _______, _______,  _______,        _______, _______, _______, KC_PPLS,  KC_PENT, KC_P0,  KC_PDOT}
 },
 
 /* Raise
@@ -107,9 +107,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = {
-  {KC_ESC, KC_EXLM, KC_AT,    KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN,  KC_RPRN,  KC_CLEAR},
+  {KC_ESC, KC_EXLM, KC_AT,    KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN,  KC_RPRN,  KC_NUMLOCK},
   {_______, KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), KC_SHRUG_FACE, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
-  {_______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
+  {M(M_CAPS), KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
   {_______, KC_PAUSE, KC_INS, _______, _______, KC_PSCR, KC_PSCR, _______, _______, _______,  _______,  _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______}
 },
@@ -130,7 +130,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
   {_______, _______, _______, AG_NORM, AG_SWAP, _______, _______, _______, _______, _______, _______, _______},
-  {_______, _______, _______, AU_ON,   AU_OFF,  MI_ON,   MI_OFF,  KC_EJCT, _______, _______, _______, _______},
+  {_______, _______, _______, AU_ON,   AU_OFF,  MI_ON,   MI_OFF,  KC_EJCT, BL_STEP,    _______, _______, _______},
   {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  _______, _______, ARROW,   QWERTY,  NUMPAD,  _______, _______},
   {_______, _______, _______, _______, _______, RESET,   RESET,   _______, _______, _______, _______, _______}
 }
@@ -205,14 +205,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
           }
           break;
-        case M_BL:
+        case M_CAPS:
           if (record->event.pressed) {
-            register_code(KC_RSFT);
-            #ifdef BACKLIGHT_ENABLE
-              backlight_step();
-            #endif
+            register_code(KC_CAPS);
+            backlight_level(BACKLIGHT_LEVELS);
+            breathing_toggle();
           } else {
-            unregister_code(KC_RSFT);
+            unregister_code(KC_CAPS);
           }
           break;
         case M_SHRUG:
