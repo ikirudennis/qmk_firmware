@@ -216,7 +216,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           break;
         case M_SHRUG:
           if (record->event.pressed) {
-            return MACRO(I(10), T(SHRUG_HAND), T(BSLASH), D(LSHIFT), T(MINUS), T(9), U(LSHIFT), T(SHRUG_FACE), D(LSHIFT), T(0), T(MINUS), U(LSHIFT), T(SLASH), T(SHRUG_HAND), END);
+            return MACRO(I(10), D(LALT), T(0), T(0), T(A), T(F), U(LALT), T(BSLASH), D(LSHIFT), T(MINUS), T(9), U(LSHIFT), D(LALT), T(3), T(0), T(C), T(4), U(LALT), D(LSHIFT), T(0), T(MINUS), U(LSHIFT), T(SLASH), D(LALT), T(0), T(0), T(A), T(F), U(LALT), END);
           }
           break;
         case M_ESHRUG:
