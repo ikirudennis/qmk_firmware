@@ -9,22 +9,27 @@
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-#define _QWERTY 0
-#define _ARROW 12
-#define _NUMPAD 13
-#define _LOWER 14
-#define _RAISE 15
-#define _ADJUST 16
+
+enum preonic_layers {
+  _QWERTY,
+  _ARROW,
+  _NUMPAD,
+  _LOWER,
+  _RAISE,
+  _ADJUST
+};
 
 // Macro name shortcuts
-#define QWERTY M(_QWERTY)
-#define ARROW M(_ARROW)
-#define NUMPAD M(_NUMPAD)
-#define LOWER M(_LOWER)
-#define RAISE M(_RAISE)
-#define M_CAPS 5
-#define M_SHRUG 6
-#define M_ESHRUG 7
+enum preonic_keycodes {
+  QWERTY = SAFE_RANGE,
+  ARROW,
+  NUMPAD,
+  LOWER,
+  RAISE,
+  M_CAPS,
+  M_SHRUG,
+  M_ESHRUG
+};
 
 // Fillers to make layering more clear
 #define _______ KC_TRNS
@@ -138,16 +143,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-const uint16_t PROGMEM fn_actions[] = {
-
-};
-
 #ifdef AUDIO_ENABLE
-float start_up[][2] = {
-  {440.0*pow(2.0,(14)/12.0), 20},
-  {440.0*pow(2.0,(26)/12.0), 8},
-  {440.0*pow(2.0,(18)/12.0), 20},
-  {440.0*pow(2.0,(26)/12.0), 8}
+float tone_startup[][2] = {
+  {NOTE_B5, 20},
+  {NOTE_B6, 8},
+  {NOTE_DS6, 20},
+  {NOTE_B6, 8}
 };
 
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
@@ -160,10 +161,9 @@ void persistant_default_layer_set(uint16_t default_layer) {
   default_layer_set(default_layer);
 }
 
-const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
-{
-      switch(id) {
-        case _QWERTY:
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+        case QWERTY:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
               PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
@@ -171,7 +171,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             persistant_default_layer_set(1UL<<_QWERTY);
           }
           break;
-        case _NUMPAD:
+        case NUMPAD:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
               PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
@@ -179,7 +179,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             persistant_default_layer_set(1UL<<_NUMPAD);
           }
           break;
-        case _ARROW:
+        case ARROW:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
               PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
@@ -187,7 +187,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             persistant_default_layer_set(1UL<<_LOWER);
           }
           break;
-        case _LOWER:
+        case LOWER:
           if (record->event.pressed) {
             layer_on(_LOWER);
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
@@ -196,7 +196,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
           }
           break;
-        case _RAISE:
+        case RAISE:
           if (record->event.pressed) {
             layer_on(_RAISE);
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
@@ -223,20 +223,24 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
           if (record->event.pressed) {
             return MACRO(I(10), D(LSHIFT), T(7), U(LSHIFT), T(S), T(H), T(R), T(U), T(G), T(SCLN), END);
           }
+          return false;
           break;
       }
-    return MACRO_NONE;
+    return true;
 };
-
 
 void matrix_init_user(void) {
   #ifdef AUDIO_ENABLE
-    _delay_ms(20); // gets rid of tick
-    PLAY_NOTE_ARRAY(start_up, false, 0);
+  startup_user();
   #endif
 }
-
 #ifdef AUDIO_ENABLE
+
+void startup_user()
+{
+    _delay_ms(20); // gets rid of tick
+    PLAY_NOTE_ARRAY(tone_startup, false, 0);
+}
 
 void play_goodbye_tone()
 {
