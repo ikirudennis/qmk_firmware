@@ -25,7 +25,10 @@ enum preonic_keycodes {
   ARROW,
   NUMPAD,
   LOWER,
-  RAISE,
+  RAISE
+};
+
+enum macros {
   M_CAPS,
   M_SHRUG,
   M_ESHRUG
@@ -113,8 +116,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = {
   {KC_ESC, KC_EXLM, KC_AT,    KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN,  KC_RPRN,  KC_NUMLOCK},
-  {_______, KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), KC_SHRUG_FACE, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
-  {M(M_CAPS), KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
+  {M(M_CAPS), KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), KC_SHRUG_FACE, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
+  {_______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
   {_______, KC_PAUSE, KC_INS, _______, _______, KC_PSCR, KC_PSCR, _______, _______, _______,  _______,  _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______}
 },
@@ -134,7 +137,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ADJUST] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-  {_______, _______, _______, AG_NORM, AG_SWAP, _______, _______, _______, _______, _______, _______, _______},
+  {_______, _______, _______, AG_NORM, AG_SWAP, _______, _______, LCTL(LSFT(KC_EJCT)), _______, _______, _______, _______},
   {_______, _______, _______, AU_ON,   AU_OFF,  MI_ON,   MI_OFF,  KC_EJCT, BL_STEP,    _______, _______, _______},
   {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  _______, _______, ARROW,   QWERTY,  NUMPAD,  _______, _______},
   {_______, _______, _______, _______, _______, RESET,   RESET,   _______, _______, _______, _______, _______}
@@ -153,7 +156,8 @@ float tone_startup[][2] = {
 
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
 
-float goodbye[][2] = SONG(GOODBYE_SOUND);
+float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
+float tone_music_on[][2]     = SONG(DVORAK_SOUND);
 #endif
 
 void persistant_default_layer_set(uint16_t default_layer) {
@@ -205,26 +209,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
           }
           break;
-        case M_CAPS:
-          if (record->event.pressed) {
-            register_code(KC_CAPS);
-            backlight_level(BACKLIGHT_LEVELS);
-            breathing_toggle();
-          } else {
-            unregister_code(KC_CAPS);
-          }
-          break;
-        case M_SHRUG:
-          if (record->event.pressed) {
-            return MACRO(I(10), D(LALT), T(0), T(0), T(A), T(F), U(LALT), T(BSLASH), D(LSHIFT), T(MINUS), T(9), U(LSHIFT), D(LALT), T(3), T(0), T(C), T(4), U(LALT), D(LSHIFT), T(0), T(MINUS), U(LSHIFT), T(SLASH), D(LALT), T(0), T(0), T(A), T(F), U(LALT), END);
-          }
-          break;
-        case M_ESHRUG:
-          if (record->event.pressed) {
-            return MACRO(I(10), D(LSHIFT), T(7), U(LSHIFT), T(S), T(H), T(R), T(U), T(G), T(SCLN), END);
-          }
-          return false;
-          break;
       }
     return true;
 };
@@ -242,10 +226,50 @@ void startup_user()
     PLAY_NOTE_ARRAY(tone_startup, false, 0);
 }
 
+void shutdown_user()
+{
+    _delay_ms(20); // gets rid of tick
+    PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
+    stop_all_notes();
+}
+
+void music_on_user()
+{
+    PLAY_NOTE_ARRAY(tone_music_on, false, 0);
+}
+
 void play_goodbye_tone()
 {
-  PLAY_NOTE_ARRAY(goodbye, false, 0);
+  PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
   _delay_ms(150);
 }
 
 #endif
+
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) // this is the function signature -- just copy/paste it into your keymap file as it is.
+{
+  switch(id) {
+    case M_CAPS:
+      if (record->event.pressed) {
+        register_code(KC_CAPS);
+        backlight_level(BACKLIGHT_LEVELS);
+        breathing_toggle();
+      } else {
+        unregister_code(KC_CAPS);
+      }
+      break;
+    case M_SHRUG:
+      if (record->event.pressed) {
+        return MACRO(I(10), D(LALT), T(0), T(0), T(A), T(F), U(LALT), T(BSLASH), D(LSHIFT), T(MINUS), T(9), U(LSHIFT), D(LALT), T(3), T(0), T(C), T(4), U(LALT), D(LSHIFT), T(0), T(MINUS), U(LSHIFT), T(SLASH), D(LALT), T(0), T(0), T(A), T(F), U(LALT), END);
+      }
+      return false;
+      break;
+    case M_ESHRUG:
+      if (record->event.pressed) {
+        return MACRO(I(10), D(LSHIFT), T(7), U(LSHIFT), T(S), T(H), T(R), T(U), T(G), T(SCLN), END);
+      }
+      return false;
+      break;
+  }
+  return MACRO_NONE;
+};
