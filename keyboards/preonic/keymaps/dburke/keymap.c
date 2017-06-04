@@ -58,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,    KC_U,    KC_I,     KC_O,     KC_P,     KC_BSLASH},
   {LT(_RAISE, KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,                KC_G,    KC_H,    KC_J,     KC_K,     KC_L,     KC_SCLN, KC_QUOT},
   {KC_RSFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_ENT },
-  {KC_LSFT,   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   LT(_LOWER, KC_SPC),  KC_SPC,  RAISE,   MT(MOD_LGUI, KC_MINUS), MT(MOD_LALT, KC_EQUAL), MT(MOD_LCTL, KC_LBRC),  MT(MOD_LSFT, KC_RBRC)}
+  {KC_LSFT,   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   LT(_LOWER, KC_SPC),  LT(_RAISE, KC_SPC),  RAISE,   MT(MOD_LGUI, KC_MINUS), MT(MOD_LALT, KC_EQUAL), MT(MOD_LCTL, KC_LBRC),  MT(MOD_LSFT, KC_RBRC)}
 },
 /* NUMPAD
  * ,-----------------------------------------------------------------------------------.
@@ -102,23 +102,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 },
 
 /* Raise
- * ,-----------------------------------------------------------------------------------.
- * | Esc  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Del  |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Bksp | PgUp |  Del |eShrug|  sf  | Home | PgUp | PgDn | End  |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Home | PgDn |  End | Shrug|  sh  | Left | Down |  Up  | Right|      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Pause| Ins  |      |      | Print|Screen|      |      |      |      |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
+ * ,---------------------------------------------------------------------------------------.
+ * | Esc  | F11  | F12  |  F13 |  F14 | F15  | F16  | F17  | F18  | F19  |  F20 | NUMLOCK  |
+ * |------+------+------+------+------+------+------+------+------+------+------+----------|
+ * |      | Bksp | PgUp |  Del |eShrug|  sf  | Home | PgUp | PgDn | End  |      |          |
+ * |------+------+------+------+------+------+------+------+------+------+------+----------|
+ * |      | Home | PgDn |  End | Shrug|  sh  | Left | Down |  Up  | Right|      |          |
+ * |------+------+------+------+------+------+------+------+------+------+------+----------|
+ * |      | Pause| Ins  |   -  |   =  | Print|Screen|      |      |      |      | Enter    |
+ * |------+------+------+------+------+------+------+------+------+------+------+----------|
+ * |      |      |      |      |      |             |      |      |      |      |          |
+ * `---------------------------------------------------------------------------------------'
  */
 [_RAISE] = {
-  {KC_ESC, KC_EXLM, KC_AT,    KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN,  KC_RPRN,  KC_NUMLOCK},
+  {KC_ESC,  KC_F11, KC_F12, KC_F13, KC_F14, KC_F15, KC_F16, KC_F17, KC_F18, KC_F19, KC_F20, KC_NUMLOCK},
   {M(M_CAPS), KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), KC_SHRUG_FACE, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
   {_______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
-  {_______, KC_PAUSE, KC_INS, _______, _______, KC_PSCR, KC_PSCR, _______, _______, _______,  _______,  _______},
+  {_______, KC_PAUSE, KC_INS, KC_MINUS, KC_EQUAL, KC_PSCR, KC_PSCR, _______, _______, _______,  _______,  _______},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______}
 },
 
@@ -238,7 +238,7 @@ void music_on_user()
     PLAY_NOTE_ARRAY(tone_music_on, false, 0);
 }
 
-void play_goodbye_tone()
+void play_goodbye_tone(void)
 {
   PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
   _delay_ms(150);
