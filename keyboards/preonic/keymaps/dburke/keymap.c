@@ -160,7 +160,7 @@ float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
 float tone_music_on[][2]     = SONG(DVORAK_SOUND);
 #endif
 
-void persistant_default_layer_set(uint16_t default_layer) {
+void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
 }
@@ -172,24 +172,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             #ifdef AUDIO_ENABLE
               PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
             #endif
-            persistant_default_layer_set(1UL<<_QWERTY);
+            persistent_default_layer_set(1UL<<_QWERTY);
           }
+          return false;
           break;
         case NUMPAD:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
               PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
             #endif
-            persistant_default_layer_set(1UL<<_NUMPAD);
+            persistent_default_layer_set(1UL<<_NUMPAD);
           }
+          return false;
           break;
         case ARROW:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
               PLAY_NOTE_ARRAY(tone_qwerty, false, 0);
             #endif
-            persistant_default_layer_set(1UL<<_LOWER);
+            persistent_default_layer_set(1UL<<_LOWER);
           }
+          return false;
           break;
         case LOWER:
           if (record->event.pressed) {
@@ -199,6 +202,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_off(_LOWER);
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
           }
+          return false;
           break;
         case RAISE:
           if (record->event.pressed) {
@@ -208,16 +212,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_off(_RAISE);
             update_tri_layer(_LOWER, _RAISE, _ADJUST);
           }
+          return false;
           break;
       }
     return true;
 };
 
 void matrix_init_user(void) {
-  #ifdef AUDIO_ENABLE
-  startup_user();
-  #endif
+    #ifdef AUDIO_ENABLE
+        startup_user();
+    #endif
 }
+
 #ifdef AUDIO_ENABLE
 
 void startup_user()
@@ -228,12 +234,12 @@ void startup_user()
 
 void shutdown_user()
 {
-    _delay_ms(20); // gets rid of tick
     PLAY_NOTE_ARRAY(tone_goodbye, false, 0);
+    _delay_ms(150);
     stop_all_notes();
 }
 
-void music_on_user()
+void music_on_user(void)
 {
     PLAY_NOTE_ARRAY(tone_music_on, false, 0);
 }
