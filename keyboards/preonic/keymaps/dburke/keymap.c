@@ -1,9 +1,5 @@
-#include "preonic.h"
-#include "action_layer.h"
-#include "eeconfig.h"
-#ifdef AUDIO_ENABLE
-  #include "audio.h"
-#endif
+#include QMK_KEYBOARD_H
+#include "muse.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -34,10 +30,6 @@ enum macros {
   M_ESHRUG
 };
 
-// Fillers to make layering more clear
-#define _______ KC_TRNS
-#define XXXXXXX KC_NO
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
@@ -53,13 +45,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Brite| Ctrl | Alt  | GUI  |Lower |    Space    | Raise|   -  |  =   |  [   |   ]  |
  * `-----------------------------------------------------------------------------------'
  */
-[_QWERTY] = {
-  {KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                KC_6,    KC_7,    KC_8,     KC_9,     KC_0,     KC_BSPC},
-  {KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,    KC_U,    KC_I,     KC_O,     KC_P,     KC_BSLASH},
-  {LT(_RAISE, KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,                KC_G,    KC_H,    KC_J,     KC_K,     KC_L,     KC_SCLN, KC_QUOT},
-  {KC_RSFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_ENT },
-  {KC_LSFT,   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   LT(_LOWER, KC_SPC),  LT(_RAISE, KC_SPC),  RAISE,   MT(MOD_LGUI, KC_MINUS), MT(MOD_LALT, KC_EQUAL), MT(MOD_LCTL, KC_LBRC),  MT(MOD_LSFT, KC_RBRC)}
-},
+[_QWERTY] = LAYOUT_preonic_grid ( \
+  KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                KC_6,    KC_7,    KC_8,     KC_9,     KC_0,     KC_BSPC, \
+  KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                KC_Y,    KC_U,    KC_I,     KC_O,     KC_P,     KC_BSLASH, \
+  LT(_RAISE, KC_ESC), KC_A,    KC_S,    KC_D,    KC_F,                KC_G,    KC_H,    KC_J,     KC_K,     KC_L,     KC_SCLN, KC_QUOT, \
+  KC_RSFT,   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                KC_N,    KC_M,    KC_COMM,  KC_DOT,   KC_SLSH,  KC_ENT, \
+  KC_LSFT,   KC_LCTL, KC_LALT, KC_LGUI, LOWER,   LT(_LOWER, KC_SPC),  LT(_RAISE, KC_SPC),  RAISE,   MT(MOD_LGUI, KC_MINUS), MT(MOD_LALT, KC_EQUAL), MT(MOD_LCTL, KC_LBRC),  MT(MOD_LSFT, KC_RBRC) \
+),
 /* NUMPAD
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   /  |   *  |   -  |   4  |   5  |   6  |   7  |   8  |   9  |      |      |
@@ -73,13 +65,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |   0  |   0  |  .   | Enter| Lower|    Space    | Raise|   -  |  =   |   [  |   ]  |
  * `-----------------------------------------------------------------------------------'
  */
-[_NUMPAD] = {
-  {KC_ESC, KC_PSLS, KC_PAST, KC_PMNS,  _______, _______, _______, _______, _______, _______, _______, _______},
-  {KC_P7,  KC_P8,   KC_P9,   KC_PPLS,  _______, _______, _______, _______, _______, _______, _______, _______},
-  {KC_P4,  KC_P5,   KC_P6,   KC_PPLS,  _______, _______, _______, _______, _______, _______, _______, _______},
-  {KC_P1,  KC_P2,   KC_P3,   KC_PENT,  _______, _______, _______, _______, _______, _______, _______, _______},
-  {KC_P0,  KC_P0,   KC_PDOT, KC_PENT,  _______, _______, _______, _______, _______, _______, _______, _______},
-},
+[_NUMPAD] = LAYOUT_preonic_grid ( \
+  KC_ESC, KC_PSLS, KC_PAST, KC_PMNS,  _______, _______, _______, _______, _______, _______, _______, _______, \
+  KC_P7,  KC_P8,   KC_P9,   KC_PPLS,  _______, _______, _______, _______, _______, _______, _______, _______, \
+  KC_P4,  KC_P5,   KC_P6,   KC_PPLS,  _______, _______, _______, _______, _______, _______, _______, _______, \
+  KC_P1,  KC_P2,   KC_P3,   KC_PENT,  _______, _______, _______, _______, _______, _______, _______, _______, \
+  KC_P0,  KC_P0,   KC_PDOT, KC_PENT,  _______, _______, _______, _______, _______, _______, _______, _______ \
+),
 /* Lower
  * ,-----------------------------------------------------------------------------------.
  * | Esc  |   F1 |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Del  |
@@ -93,13 +85,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Vol- |      |      |      |      |      |      |      |   +  | Enter|   0  |  .   |
  * `-----------------------------------------------------------------------------------'
  */
-[_LOWER] = {
-  {KC_ESC,  KC_F1,    KC_F2,   KC_F3,    KC_F4,          KC_F5,   KC_F6,   KC_F7,   KC_F8,    KC_F9,   KC_F10, KC_DEL},
-  {KC_MUTE, KC_BSPC,  KC_UP,   KC_DEL,   KC_WWW_FORWARD, KC_BTN1, KC_MS_U, KC_BTN2, KC_PSLS,  KC_P7,   KC_P8,  KC_P9},
-  {_______, KC_LEFT,  KC_DOWN, KC_RIGHT, KC_WWW_REFRESH, KC_MS_L, KC_MS_D, KC_MS_R, KC_PAST,  KC_P4,   KC_P5,  KC_P6},
-  {KC_VOLU, KC_MPRV,  KC_MPLY, KC_MNXT,  KC_WWW_BACK,    KC_WH_D, KC_BTN3, KC_WH_U, KC_PMNS,  KC_P1,   KC_P2,  KC_P3},
-  {KC_VOLD, _______,  _______, _______,  _______,        _______, _______, _______, KC_PPLS,  KC_PENT, KC_P0,  KC_PDOT}
-},
+[_LOWER] =  LAYOUT_preonic_grid (
+  KC_ESC,  KC_F1,    KC_F2,   KC_F3,    KC_F4,          KC_F5,   KC_F6,   KC_F7,   KC_F8,    KC_F9,   KC_F10, KC_DEL, \
+  KC_MUTE, KC_BSPC,  KC_UP,   KC_DEL,   KC_WWW_FORWARD, KC_BTN1, KC_MS_U, KC_BTN2, KC_PSLS,  KC_P7,   KC_P8,  KC_P9, \
+  _______, KC_LEFT,  KC_DOWN, KC_RIGHT, KC_WWW_REFRESH, KC_MS_L, KC_MS_D, KC_MS_R, KC_PAST,  KC_P4,   KC_P5,  KC_P6, \
+  KC_VOLU, KC_MPRV,  KC_MPLY, KC_MNXT,  KC_WWW_BACK,    KC_WH_D, KC_BTN3, KC_WH_U, KC_PMNS,  KC_P1,   KC_P2,  KC_P3, \
+  KC_VOLD, _______,  _______, _______,  _______,        _______, _______, _______, KC_PPLS,  KC_PENT, KC_P0,  KC_PDOT \
+),
 
 /* Raise
  * ,---------------------------------------------------------------------------------------.
@@ -114,13 +106,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |          |
  * `---------------------------------------------------------------------------------------'
  */
-[_RAISE] = {
-  {KC_ESC,  KC_F11, KC_F12, KC_F13, KC_F14, KC_F15, KC_F16, KC_F17, KC_F18, KC_F19, KC_F20, KC_NUMLOCK},
-  {M(M_CAPS), KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), KC_SHRUG_FACE, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______},
-  {_______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), KC_SHRUG_HAND, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______},
-  {_______, KC_PAUSE, KC_INS, KC_MINUS, KC_EQUAL, KC_PSCR, KC_PSCR, _______, _______, _______,  _______,  _______},
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______}
-},
+[_RAISE] = LAYOUT_preonic_grid ( \
+  KC_ESC,  KC_F11, KC_F12, KC_F13, KC_F14, KC_F15, KC_F16, KC_F17, KC_F18, KC_F19, KC_F20, KC_NUMLOCK, \
+  M(M_CAPS), KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______, \
+  _______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______, \
+  _______, KC_PAUSE, KC_INS, KC_MINUS, KC_EQUAL, KC_PSCR, KC_PSCR, KC_GRV, _______, _______,  _______,  _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______ \
+),
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
@@ -135,35 +127,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |     Reset   |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_ADJUST] = {
-  {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______},
-  {_______, _______, _______, AG_NORM, AG_SWAP, _______, _______, LCTL(LSFT(KC_EJCT)), _______, _______, _______, _______},
-  {_______, _______, _______, AU_ON,   AU_OFF,  MI_ON,   MI_OFF,  KC_EJCT, BL_STEP,    _______, _______, _______},
-  {_______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  _______, _______, ARROW,   QWERTY,  NUMPAD,  _______, _______},
-  {_______, _______, _______, _______, _______, RESET,   RESET,   _______, _______, _______, _______, _______}
-}
+[_ADJUST] = LAYOUT_preonic_grid ( \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, AG_NORM, AG_SWAP, _______, _______, LCTL(LSFT(KC_EJCT)), _______, _______, _______, _______, \
+  _______, _______,  MU_MOD, AU_ON,   AU_OFF,  MI_ON,   MI_OFF,  KC_EJCT, BL_STEP, BL_BRTG, _______, _______, \
+  _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  _______, _______, ARROW,   QWERTY,  NUMPAD,  _______, _______, \
+  _______, _______, _______, _______, _______, RESET,   RESET,   _______, _______, _______, _______, _______ \
+)
 
 
 };
 
 #ifdef AUDIO_ENABLE
-float tone_startup[][2] = {
-  {NOTE_B5, 20},
-  {NOTE_B6, 8},
-  {NOTE_DS6, 20},
-  {NOTE_B6, 8}
-};
+float tone_startup[][2] = SONG(STARTUP_SOUND);
 
-float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
+float tone_qwerty[][2] = SONG(QWERTY_SOUND);
 
 float tone_goodbye[][2] = SONG(GOODBYE_SOUND);
-float tone_music_on[][2]     = SONG(DVORAK_SOUND);
+float tone_music_on[][2] = SONG(MUSIC_ON_SOUND);
+float tone_arrow[][2] = SONG(ONE_UP_SOUND);
+float tone_caps_on[][2] = SONG(CAPS_LOCK_ON_SOUND);
+float tone_caps_off[][2] = SONG(CAPS_LOCK_OFF_SOUND);
 #endif
 
-void persistent_default_layer_set(uint16_t default_layer) {
+/*void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
   default_layer_set(default_layer);
-}
+}*/
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -172,25 +162,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             #ifdef AUDIO_ENABLE
               PLAY_SONG(tone_qwerty);
             #endif
-            persistent_default_layer_set(1UL<<_QWERTY);
+            set_single_persistent_default_layer(_QWERTY);
           }
           return false;
           break;
         case NUMPAD:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
-              PLAY_SONG(tone_qwerty);
+              PLAY_SONG(tone_goodbye);
             #endif
-            persistent_default_layer_set(1UL<<_NUMPAD);
+            set_single_persistent_default_layer(_NUMPAD);
           }
           return false;
           break;
         case ARROW:
           if (record->event.pressed) {
             #ifdef AUDIO_ENABLE
-              PLAY_SONG(tone_qwerty);
+              PLAY_SONG(tone_arrow);
             #endif
-            persistent_default_layer_set(1UL<<_LOWER);
+            set_single_persistent_default_layer(_LOWER);
           }
           return false;
           break;
@@ -218,24 +208,101 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-void matrix_init_user(void) {
+bool muse_mode = false;
+uint8_t last_muse_note = 0;
+uint16_t muse_counter = 0;
+uint8_t muse_offset = 70;
+uint16_t muse_tempo = 50;
+
+void encoder_update(bool clockwise) {
+  if (muse_mode) {
+    if (IS_LAYER_ON(_RAISE)) {
+      if (clockwise) {
+        muse_offset++;
+      } else {
+        muse_offset--;
+      }
+    } else {
+      if (clockwise) {
+        muse_tempo+=1;
+      } else {
+        muse_tempo-=1;
+      }
+    }
+  } else {
+    if (clockwise) {
+      register_code(KC_PGDN);
+      unregister_code(KC_PGDN);
+    } else {
+      register_code(KC_PGUP);
+      unregister_code(KC_PGUP);
+    }
+  }
+}
+
+void dip_update(uint8_t index, bool active) {
+  switch (index) {
+    case 0:
+      if (active) {
+        layer_on(_ADJUST);
+      } else {
+        layer_off(_ADJUST);
+      }
+      break;
+    case 1:
+      if (active) {
+        muse_mode = true;
+      } else {
+        muse_mode = false;
+        #ifdef AUDIO_ENABLE
+          stop_all_notes();
+        #endif
+      }
+   }
+}
+
+void matrix_scan_user(void) {
+  #ifdef AUDIO_ENABLE
+    if (muse_mode) {
+      if (muse_counter == 0) {
+        uint8_t muse_note = muse_offset + SCALE[muse_clock_pulse()];
+        if (muse_note != last_muse_note) {
+          stop_note(compute_freq_for_midi_note(last_muse_note));
+          play_note(compute_freq_for_midi_note(muse_note), 0xF);
+          last_muse_note = muse_note;
+        }
+      }
+      muse_counter = (muse_counter + 1) % muse_tempo;
+    }
+  #endif
+}
+
+bool music_mask_user(uint16_t keycode) {
+  switch (keycode) {
+    case RAISE:
+    case LOWER:
+      return false;
+    default:
+      return true;
+  }
+}
+
+/*void matrix_init_user(void) {
     #ifdef AUDIO_ENABLE
         startup_user();
     #endif
-}
+}*/
 
 #ifdef AUDIO_ENABLE
 
 void startup_user()
 {
-    _delay_ms(20); // gets rid of tick
     PLAY_SONG(tone_startup);
 }
 
 void shutdown_user()
 {
     PLAY_SONG(tone_goodbye);
-    _delay_ms(150);
     stop_all_notes();
 }
 
@@ -247,7 +314,6 @@ void music_on_user(void)
 void play_goodbye_tone(void)
 {
   PLAY_SONG(tone_goodbye);
-  _delay_ms(150);
 }
 
 #endif
@@ -258,11 +324,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
     case M_CAPS:
       if (record->event.pressed) {
         register_code(KC_CAPS);
-        backlight_level(BACKLIGHT_LEVELS);
-        breathing_toggle();
+        PLAY_SONG(tone_caps_on);
       } else {
         unregister_code(KC_CAPS);
+        PLAY_SONG(tone_caps_off);
       }
+      return false;
       break;
     case M_SHRUG:
       if (record->event.pressed) {

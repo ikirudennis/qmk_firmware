@@ -4,6 +4,10 @@ The CMD project seeks to improve productivity by optimizing usage of the left ha
 
 >Note: This project is currently optimized for grid layout, and has not been confirmed to work 100% on MIT layout, although it is expected to work correctly.
 
+## To Flash:
+
+Run `make preonic/rev3:dburke:dfu-util-wait` and while it's counting down, put the keyboard into flash mode: Adjust-Space or hit the button underneath.
+
 ----------
 
 Modes
