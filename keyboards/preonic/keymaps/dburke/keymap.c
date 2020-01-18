@@ -97,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------------------------------------------.
  * | Esc  | F11  | F12  |  F13 |  F14 | F15  | F16  | F17  | F18  | F19  |  F20 | NUMLOCK  |
  * |------+------+------+------+------+------+------+------+------+------+------+----------|
- * |      | Bksp | PgUp |  Del |eShrug|  sf  | Home | PgUp | PgDn | End  |      |          |
+ * |      | Bksp | PgUp |  Del |eShrug|  sf  | Home | PgUp | PgDn | End  |      | SCRLOCK  |
  * |------+------+------+------+------+------+------+------+------+------+------+----------|
  * |      | Home | PgDn |  End | Shrug|  sh  | Left | Down |  Up  | Right|      |          |
  * |------+------+------+------+------+------+------+------+------+------+------+----------|
@@ -108,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT_preonic_grid ( \
   KC_ESC,  KC_F11, KC_F12, KC_F13, KC_F14, KC_F15, KC_F16, KC_F17, KC_F18, KC_F19, KC_F20, KC_NUMLOCK, \
-  M(M_CAPS), KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  _______, \
+  M(M_CAPS), KC_BSPC, KC_PGUP, KC_DEL,  M(M_ESHRUG), _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______,  KC_SCROLLLOCK, \
   _______, KC_HOME, KC_PGDN, KC_END,  M(M_SHRUG), _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,  _______, \
   _______, KC_PAUSE, KC_INS, KC_MINUS, KC_EQUAL, KC_PSCR, KC_PSCR, KC_GRV, _______, _______,  _______,  _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______,  _______ \
